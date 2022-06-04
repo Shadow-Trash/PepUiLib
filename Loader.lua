@@ -1,6 +1,6 @@
 local library = {
-	Version = "0.33",
-	WorkspaceName = "Shadow Hub Premium Scripts",
+	Version = "3.0",
+	WorkspaceName = "Shadow Hub Premium Script",
 	flags = {},
 	signals = {},
 	objects = {},
@@ -15,10 +15,10 @@ local library = {
 		easingDirection = Enum.EasingDirection.Out
 	},
 	colors = {
-		main = Color3.fromHex('89cff0'),
+		main = Color3.fromRGB(0, 111, 255),
 		background = Color3.fromRGB(40, 40, 40),
 		outerBorder = Color3.fromRGB(15, 15, 15),
-		innerBorder = Color3.fromHex('998c99'),
+		innerBorder = Color3.fromRGB(73, 63, 73),
 		topGradient = Color3.fromRGB(35, 35, 35),
 		bottomGradient = Color3.fromRGB(29, 29, 29),
 		sectionBackground = Color3.fromRGB(35, 34, 34),
@@ -263,6 +263,7 @@ do
 			end)
 		end
 	end
+	library.subs.UpdateColors = updatecolors
 end
 local function updatecolorsnotween()
 	updatecolors()
@@ -396,13 +397,7 @@ local function unloadall()
 						v[k] = nil
 					end
 				end
-				if shared.libraries then
-					pcall(function()
-						table.remove(shared.libraries, 1)
-					end)
-				else
-					return pcall(hardunload, library)
-				end
+				table.remove(shared.libraries, 1)
 			end
 		end
 	end
@@ -449,9 +444,7 @@ local playersservice = game:GetService("Players")
 local function getresolver(listt, filter, method, _)
 	local huo, args = type(filter), {}
 	local hou = typeof(listt)
-	return (hou == "function" and function(...)
-		return listt(...)
-	end) or (hou == "table" and function()
+	return (hou == "table" and function()
 		return listt
 	end) or function()
 		local hardtype = nil
@@ -5673,9 +5666,6 @@ function library:CreateWindow(options, ...)
 			Name = "Background",
 			Side = "right"
 		})
-		local detailssection = designer:CreateSection({
-			Name = "More Info"
-		})
 		local filessection = designer:CreateSection({
 			Name = "Profiles",
 			Side = "right"
@@ -5831,12 +5821,6 @@ function library:CreateWindow(options, ...)
 				common_table = nil
 			end
 		end
-		if options.Credit ~= false then
-			daaata[1 + #daaata] = {"AddLabel", "__Designer.Label.Creator", detailssection, {
-				Text = "Library by Pepsi#5229 "
-			}}
-		elseif "Gee, thanks for your support." then
-		end
 		if options.Info then
 			local typ = type(options.Info)
 			if typ == "string" then
@@ -5911,7 +5895,6 @@ function library:CreateWindow(options, ...)
 			Instance = designer,
 			SetBackground = setbackground
 		}
-		library.SetBackground = setbackground
 		local savestuff = library.elements["__Designer.Background.WorkspaceProfile"]
 		if savestuff then
 			library.LoadFile = savestuff.LoadFile
